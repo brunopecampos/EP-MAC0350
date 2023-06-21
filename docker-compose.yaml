@@ -7,8 +7,8 @@ services:
     environment:
       - POSTGRES_USER=testeusr
       - POSTGRES_PASSWORD=testeusr
-    volumes: 
-      - "./data:/var/lib/postgresql/datas"
+    volumes:
+      - ./db-init:/docker-entrypoint-initdb.d/
     networks:
       - mynetwork
 
@@ -29,25 +29,6 @@ services:
       - "./app/demo/src:/app/src"
     networks:
       - mynetwork
-
     
-  
-  #redis:
-  #  image: redis
-  #  ports:
-  #    - "6379:6379"
-  #  networks:
-  #    - mynetwork
-#
-  #backend:
-  #  build:
-  #    context: "./backend"
-  #  ports:
-  #    - "5000:5000"
-  #  networks:
-  #    - mynetwork
-  #  volumes:
-  #    - "./backend:/app"
-
 networks:
   mynetwork:
