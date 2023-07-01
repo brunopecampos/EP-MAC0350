@@ -1,28 +1,4 @@
 -- CREATE TABLE pessoa (
---   id serial,
---   cpf VARCHAR(11) UNIQUE,
---   nome TEXT,
---   endereco TEXT,
---   instituicao TEXT,
---   login TEXT,
---   senha TEXT,
---   data_nasc TIMESTAMP,
---   PRIMARY KEY(id)
--- );
-
--- INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
--- VALUES ('12345678901', 'João Silva', 'Rua Principal, 123', 'Universidade XYZ', 'joaosilva', 'senhasecreta', '2000-01-01 00:00:00');
--- INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
--- VALUES ('12399978901', 'Paulo', 'Rua Principal, 321', 'Universidade ABC', 'paulo', 'senhasecreta', '2002-02-02 00:02:02');
--- INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
--- VALUES ('98765432101', 'Maria', 'Avenida Central, 123', 'Universidade XYZ', 'maria', 'senha123', '1990-10-15 08:30:00');
--- INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
--- VALUES ('55588877700', 'João', 'Rua Secundária, 456', 'Instituto ABCD', 'joao', '123456', '1985-05-20 12:00:00');
--- INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
--- VALUES ('11122233344', 'Ana', 'Praça Principal, 789', 'Faculdade XYZ', 'ana', 'abcd123', '1998-12-01 18:45:00');
-
-
--- CREATE TABLE pessoa (
 --     id serial,
 --     nusp character varying(10) NOT NULL,
 --     nome character varying(255) NOT NULL,
@@ -209,7 +185,6 @@ INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, 
 VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
 
-
 CREATE FUNCTION lista_pessoaperfil()
 RETURNS SETOF perfil_pessoa AS $$
     SELECT * FROM perfil_pessoa
@@ -259,3 +234,5 @@ $$ LANGUAGE SQL;
 -- GROUP BY d.id
 -- ORDER BY COUNT(*) DESC
 -- LIMIT 5;
+
+
