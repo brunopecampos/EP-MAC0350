@@ -28,10 +28,10 @@ public class Pessoa {
     }
 
     public String getCpf(){
-        return cpf;
+        return this.cpf;
     }
 
-    public void setCpf(String id) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

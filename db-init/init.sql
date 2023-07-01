@@ -206,6 +206,7 @@ RETURNS SETOF linha1 AS $$
     SELECT p.tipo as perfil, s.tipo as servico
     FROM servico s, perfil p
     WHERE  p.id = s.id;
+    GROUP BY p.tipo, s.tipo
 $$ LANGUAGE SQL;
 
 
