@@ -24,7 +24,7 @@
                     <thead >
                         <tr >
                         <th>ID</th>
-                        <th>No. USP</th>
+                        <th>Cpf</th>
                         <th>Nome</th>
                         <th></th>
                         </tr>
@@ -32,7 +32,7 @@
                     <tbody>
                         <tr th:each="p : ${listaPessoas}">
                             <td th:text="${{p.id}}">1</td>
-                            <td th:text="${{p.nusp}}">No. USP</td>
+                            <td th:text="${{p.cpf}}">Cpf</td>
                             <td th:text="${{p.nome}}">Nome da pessoa</td>
                             <td class="d-flex justify-content-end">
                                 <a href="#" class="btn btn-outline-primary me-2" th:href="@{/pessoa} + '/' + ${p.id}">Atualizar</a>

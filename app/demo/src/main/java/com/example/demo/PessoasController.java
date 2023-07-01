@@ -36,7 +36,7 @@ public class PessoasController {
 
     @GetMapping("/pessoa/{id}")
     public String editPessoa(Model model, @PathVariable Integer id) {
-        Pessoa pessoa = jdbcTemplate.queryForObject("SELECT * FROM pessoa WHERE id = ?", 
+        Pessoa pessoa = jdbcTemplate.queryForObject("SELECT cpf,nome,endereco,instituicao,login,senha,data_nasc FROM pessoa WHERE id = ?", 
             new PessoaRowMapper(), id);
         model.addAttribute("pessoa", pessoa);
         return "pessoa";
@@ -47,14 +47,26 @@ public class PessoasController {
         
         if (pessoa.getId() > 0) {
             jdbcTemplate.update(
-                "UPDATE pessoa SET nusp = ?, nome = ? WHERE id = ?",
-                pessoa.getNusp(),
+                "UPDATE pessoa WHERE id = ?, WHERE cpf = ?,WHERE nome = ?, WHERE endereco = ?, WHERE instituicao = ?, WHERE login = ?, WHERE senha = ?, WHERE data_nasc = ? ",
+                pessoa.getId(),
+                pessoa.getCpf(),
                 pessoa.getNome(),
-                pessoa.getId()
+                pessoa.getEndereco(),
+                pessoa.getInstituicao(),
+                pessoa.getLogin(),
+                pessoa.getSenha(),
+                pessoa.getDataNasc()
             );
         } else {
             jdbcTemplate.update(
-                "INSERT INTO pessoa (nusp, nome) VALUES (?, ?)", pessoa.getNusp(), pessoa.getNome());        
+                "INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                pessoa.getCpf(),
+                pessoa.getNome(), 
+                pessoa.getEndereco(),
+                pessoa.getInstituicao(),
+                pessoa.getLogin(),
+                pessoa.getSenha(),
+                pessoa.getDataNasc());        
         }
         return "redirect:/pessoas";
     }
@@ -70,3 +82,62 @@ public class PessoasController {
 
 
 }
+
+
+// @Controller
+// public class PessoasController {
+
+//     @Autowired
+//     JdbcTemplate jdbcTemplate;
+
+//     @GetMapping("/pessoas")
+//     public String listaPessoas(Model model) {
+//         List<Pessoa> pessoas = jdbcTemplate.query(
+//                 "SELECT * FROM pessoa ORDER BY id DESC",
+//                 new PessoaRowMapper());
+//         model.addAttribute("listaPessoas", pessoas);
+//         return "pessoas";
+//     }
+
+//     @GetMapping("/pessoa")
+//     public String formPessoa(Model model) {
+//         model.addAttribute("pessoa", new Pessoa());
+//         return "pessoa";
+//     }
+
+//     @GetMapping("/pessoa/{id}")
+//     public String editPessoa(Model model, @PathVariable Integer id) {
+//         Pessoa pessoa = jdbcTemplate.queryForObject("SELECT * FROM pessoa WHERE id = ?", 
+//             new PessoaRowMapper(), id);
+//         model.addAttribute("pessoa", pessoa);
+//         return "pessoa";
+//     }
+
+//     @PostMapping("/pessoa")
+//     public String submitPessoa(@ModelAttribute Pessoa pessoa, Model model) {
+        
+//         if (pessoa.getId() > 0) {
+//             jdbcTemplate.update(
+//                 "UPDATE pessoa SET nusp = ?, nome = ? WHERE id = ?",
+//                 pessoa.getNusp(),
+//                 pessoa.getNome(),
+//                 pessoa.getId()
+//             );
+//         } else {
+//             jdbcTemplate.update(
+//                 "INSERT INTO pessoa (nusp, nome) VALUES (?, ?)", pessoa.getNusp(), pessoa.getNome());        
+//         }
+//         return "redirect:/pessoas";
+//     }
+
+//     @DeleteMapping("/pessoa/{id}")
+//     public String deletePessoa(@PathVariable Integer id) {
+//         jdbcTemplate.update(
+//             "DELETE FROM pessoa WHERE ID = ?",
+//             id
+//         );
+//         return "redirect:/pessoas";
+//     }
+
+
+// }
