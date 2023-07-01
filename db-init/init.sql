@@ -210,10 +210,33 @@ VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
 
 
+CREATE FUNCTION lista_pessoaperfil()
+RETURNS SETOF perfil_pessoa AS $$
+    SELECT * FROM perfil_pessoa
+    ORDER BY id_perfil
+$$ LANGUAGE SQL;
+
+-- CREATE TYPE minha_linha AS (
+--     coluna1 INTEGER,
+--     coluna2 TEXT,
+--     coluna3 DATE
+-- );
+
+CREATE TYPE linha1 AS (
+    ptipo TEXT,
+    stipo TEXT
+);
+CREATE FUNCTION consulta1()
+RETURNS SETOF linha1 AS $$
+    SELECT p.tipo as perfil, s.tipo as servico
+    FROM servico s, perfil p
+    WHERE  p.id = s.id;
+$$ LANGUAGE SQL;
+
+
 -- SELECT p.tipo as perfil, s.tipo as servico
 -- FROM servico s, perfil p
 -- WHERE  p.id = s.id;
-
 
 -- SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
 -- FROM perfil_pessoa pp, perfil p, servico s
@@ -236,4 +259,3 @@ VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 -- GROUP BY d.id
 -- ORDER BY COUNT(*) DESC
 -- LIMIT 5;
-
