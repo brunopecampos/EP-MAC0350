@@ -11,6 +11,26 @@
             <a class="navbar-brand fw-bold" href="#page-top">MAC0350 - Consulta 1</a>
         </div>
     </nav>
+    <div class="container px-5 pt-5">
+        <div class="row gx-5 align-items-center">
+            <div class="row gx-5 align-items-center">
+                <table class="table" >
+                    <thead>
+                        <tr >
+                            <th>Perfil</th>
+                            <th>Serviço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c1 : ${consulta1}">
+                            <td th:text="${{c1.perfil}}"></td>
+                            <td th:text="${{c1.servico}}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!-- <div class="container px-5 pt-5">
         <div class="row gx-5 align-items-center">

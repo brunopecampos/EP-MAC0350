@@ -204,12 +204,13 @@ $$ LANGUAGE SQL;
 -- );
 
 CREATE TYPE linha1 AS (
-    ptipo TEXT,
-    stipo TEXT
+    pnome TEXT,
+    snome TEXT
 );
+
 CREATE FUNCTION consulta1()
-RETURNS SETOF linha1 AS $$
-  SELECT p.tipo as perfil, s.tipo as servico
+RETURNS TABLE (pnome TEXT, snome TEXT) AS $$
+  SELECT p.tipo as pnome, s.tipo as snome
   FROM servico s, perfil p
   WHERE  p.id = s.id_perfil
   ORDER BY p.tipo;

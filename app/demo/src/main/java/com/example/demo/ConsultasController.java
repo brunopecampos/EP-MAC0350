@@ -22,8 +22,8 @@ public class ConsultasController {
     @GetMapping("/consulta1")
     public String consulta1(Model model) {
         List<Consulta1> consulta1 = jdbcTemplate.query(
-                "",
-                new PessoaRowMapper());
+                "SELECT * FROM consulta1();",
+                new Consulta1RowMapper());
         model.addAttribute("consulta1", consulta1);
         return "consulta1";
     }
