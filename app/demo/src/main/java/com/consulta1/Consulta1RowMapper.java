@@ -1,20 +1,9 @@
-package com.example.demo;
+package com.consulta1;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Consulta1RowMapper implements RowMapper<Consulta1> {
-
-    // @Override
-    // public Pessoa mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-    //     Pessoa pessoa = new Pessoa();
-    //     pessoa.setId(rs.getInt("id"));
-    //     pessoa.setNusp(rs.getString("nusp"));
-    //     pessoa.setNome(rs.getString("nome"));
-    //     return pessoa;
-    // }
-
     @Override
     public Consulta1 mapRow(ResultSet rs, int rowNum) throws SQLException {
         Consulta1 consulta = new Consulta1();

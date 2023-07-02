@@ -239,11 +239,11 @@ $$ LANGUAGE SQL;
 
 CREATE TYPE linha2 AS (
     pcodigo TEXT,
-    count INTEGER
+    total_servicos INTEGER
 );
 CREATE FUNCTION consulta2()
-RETURNS SETOF linha2 AS $$
-    SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
+RETURNS TABLE (pcodigo TEXT, total_servicos INTEGER) AS $$
+    SELECT p.codigo AS pcodigo, COUNT(*) AS total_servicos
     FROM perfil_pessoa pp, perfil p, servico s
     WHERE pp.id_perfil = p.id  AND p.id = s.id_perfil
     GROUP BY p.codigo

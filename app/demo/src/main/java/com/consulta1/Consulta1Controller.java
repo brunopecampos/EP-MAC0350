@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.consulta1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Controller
-public class ConsultasController {
+public class Consulta1Controller {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -26,20 +26,5 @@ public class ConsultasController {
                 new Consulta1RowMapper());
         model.addAttribute("consulta1", consulta1);
         return "consulta1";
-    }
-
-    @GetMapping("/consulta2")
-    public String consulta2(Model model) {
-        return "consulta2";
-    }
-
-    @GetMapping("/consulta3")
-    public String consults3(Model model) {
-        return "consulta3";
-    }
-
-    @GetMapping("/consulta4")
-    public String consulta4(Model model) {
-        return "consulta4";
     }
 }

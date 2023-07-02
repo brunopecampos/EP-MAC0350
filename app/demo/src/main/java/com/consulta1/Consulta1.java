@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.consulta1;
 
 public class Consulta1 {
 
@@ -28,4 +28,5 @@ public class Consulta1 {
         this.servico = servico;
     }
     
-}
+};
+
