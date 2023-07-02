@@ -113,7 +113,9 @@ CREATE TABLE perfil (
 INSERT INTO perfil (codigo, tipo)
 VALUES ('USR', 'Usuário');
 INSERT INTO perfil (codigo, tipo)
-VALUES ('MOD', 'Moderador');
+VALUES ('ALN', 'Aluno');
+INSERT INTO perfil (codigo, tipo)
+VALUES ('PROF', 'Professor');
 INSERT INTO perfil (codigo, tipo)
 VALUES ('ADM', 'Administrador');
 
@@ -126,11 +128,13 @@ CREATE TABLE servico (
     FOREIGN KEY (id_perfil) REFERENCES perfil (id)
 );
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
-VALUES (2, 'SRV002', 'Atendimento', 'Serviço de atendimento ao cliente');
+VALUES (3, 'SRV001', 'Verificação', 'Possibilita ver notas');
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
-VALUES (3, 'SRV003', 'Consultoria', 'Serviço de consultoria empresarial');
+VALUES (4, 'SRV003', 'Consultoria', 'Serviço de consultoria empresarial');
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
 VALUES (3, 'SRV004', 'Aula', 'lecionamento');
+INSERT INTO servico (id_perfil, codigo, tipo, descricao)
+VALUES (2, 'SRV005', 'Verificação individual', 'Possibilita ver notas individuais');
 
 CREATE TABLE perfil_pessoa (
     id SERIAL PRIMARY KEY,
@@ -141,6 +145,8 @@ CREATE TABLE perfil_pessoa (
 );
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
 VALUES (5, 2);
+INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
+VALUES (5, 4);
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
 VALUES (6, 3);
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
@@ -187,8 +193,8 @@ VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
 CREATE FUNCTION lista_pessoaperfil()
 RETURNS SETOF perfil_pessoa AS $$
-    SELECT * FROM perfil_pessoa
-    ORDER BY id_perfil
+  SELECT * FROM perfil_pessoa
+  ORDER BY id_perfil
 $$ LANGUAGE SQL;
 
 -- CREATE TYPE minha_linha AS (
@@ -203,16 +209,59 @@ CREATE TYPE linha1 AS (
 );
 CREATE FUNCTION consulta1()
 RETURNS SETOF linha1 AS $$
-    SELECT p.tipo as perfil, s.tipo as servico
-    FROM servico s, perfil p
-    WHERE  p.id = s.id;
-    GROUP BY p.tipo, s.tipo
+  SELECT p.tipo as perfil, s.tipo as servico
+  FROM servico s, perfil p
+  WHERE  p.id = s.id_perfil
+  ORDER BY p.tipo;
+$$ LANGUAGE SQL;
+
+CREATE TYPE linha2 AS (
+    pcodigo TEXT,
+    count INTEGER
+);
+CREATE FUNCTION consulta2()
+RETURNS SETOF linha2 AS $$
+    SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
+    FROM perfil_pessoa pp, perfil p, servico s
+    WHERE pp.id_perfil = p.id  AND p.id = s.id_perfil
+    GROUP BY p.codigo
+    ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
 
 
--- SELECT p.tipo as perfil, s.tipo as servico
--- FROM servico s, perfil p
--- WHERE  p.id = s.id;
+CREATE TYPE linha3 AS (
+    dcodigo TEXT,
+    dementa TEXT,
+    ddata   TEXT,
+    didpessoa TEXT,
+    aidpessoa TEXT,
+    cunt INTEGER
+);
+CREATE FUNCTION consulta3()
+RETURNS SETOF linha3 AS $$
+    SELECT d.codigo AS disciplina, d.ementa, d.data_criacao, 
+          doc.id_pessoa AS cpf_professor, a.id_pessoa AS aluno, COUNT(*) AS count
+    FROM disciplina d, matricula m, docente doc, aluno a
+    WHERE d.id = m.id_disciplina AND doc.id = m.id_docente AND a.id = m.id_aluno
+    GROUP BY d.codigo, d.ementa, d.data_criacao, doc.id_pessoa, a.id_pessoa
+    ORDER BY COUNT(*) DESC
+    LIMIT 5;
+$$ LANGUAGE SQL;
+
+CREATE TYPE linha4 AS (
+    sidpessoa TEXT,
+    count INTEGER
+);
+CREATE FUNCTION consulta4()
+RETURNS SETOF linha4 AS $$
+    SELECT d.id_pessoa AS docente, COUNT(*) AS total_disciplinas_ministradas
+    FROM docente d, matricula m
+    WHERE d.id = m.id_docente AND m.data_ini >= '2020-05-01' 
+          AND m.data_fim <= '2023-05-31'
+    GROUP BY d.id
+    ORDER BY COUNT(*) DESC
+    LIMIT 5;
+$$ LANGUAGE SQL;
 
 -- SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
 -- FROM perfil_pessoa pp, perfil p, servico s
