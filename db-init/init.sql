@@ -113,7 +113,9 @@ CREATE TABLE perfil (
 INSERT INTO perfil (codigo, tipo)
 VALUES ('USR', 'Usuário');
 INSERT INTO perfil (codigo, tipo)
-VALUES ('MOD', 'Moderador');
+VALUES ('ALN', 'Aluno');
+INSERT INTO perfil (codigo, tipo)
+VALUES ('PROF', 'Professor');
 INSERT INTO perfil (codigo, tipo)
 VALUES ('ADM', 'Administrador');
 
@@ -126,11 +128,13 @@ CREATE TABLE servico (
     FOREIGN KEY (id_perfil) REFERENCES perfil (id)
 );
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
-VALUES (2, 'SRV002', 'Atendimento', 'Serviço de atendimento ao cliente');
+VALUES (3, 'SRV001', 'Verificação', 'Possibilita ver notas');
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
-VALUES (3, 'SRV003', 'Consultoria', 'Serviço de consultoria empresarial');
+VALUES (4, 'SRV003', 'Consultoria', 'Serviço de consultoria empresarial');
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
 VALUES (3, 'SRV004', 'Aula', 'lecionamento');
+INSERT INTO servico (id_perfil, codigo, tipo, descricao)
+VALUES (2, 'SRV005', 'Verificação individual', 'Possibilita ver notas individuais');
 
 CREATE TABLE perfil_pessoa (
     id SERIAL PRIMARY KEY,
@@ -141,6 +145,8 @@ CREATE TABLE perfil_pessoa (
 );
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
 VALUES (5, 2);
+INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
+VALUES (5, 4);
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
 VALUES (6, 3);
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
@@ -205,7 +211,7 @@ CREATE FUNCTION consulta1()
 RETURNS SETOF linha1 AS $$
   SELECT p.tipo as perfil, s.tipo as servico
   FROM servico s, perfil p
-  WHERE  p.id = s.id
+  WHERE  p.id = s.id_perfil
   ORDER BY p.tipo;
 $$ LANGUAGE SQL;
 
