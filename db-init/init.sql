@@ -169,7 +169,27 @@ VALUES ('HIS001', 'História do Brasil', '2022-03-20 10:15:00');
 INSERT INTO disciplina (codigo, ementa, data_criacao)
 VALUES ('ENG001', 'Introdução à Engenharia', '2022-04-10 16:45:00');
 
+CREATE TABLE oferecimento (
+  id SERIAL PRIMARY KEY,
+  id_docente SERIAL,
+  id_disciplina SERIAL,
+  data_inicio TIMESTAMP,
+  data_fim TIMESTAMP,
+  codigo TEXT UNIQUE,
+  FOREIGN KEY (id_docente) REFERENCES docente(id),
+  FOREIGN KEY (id_disciplina) REFERENCES disciplina(id)
+);
+
 CREATE TABLE matricula (
+  id SERIAL PRIMARY KEY,
+  id_oferecimento SERIAL,
+  id_aluno SERIAL,
+  nota REAL,
+  FOREIGN KEY (id_oferecimento) REFERENCES oferecimento(id),
+  FOREIGN KEY (id_aluno) REFERENCES aluno(id)
+);
+
+/*CREATE TABLE matricula (
     id SERIAL PRIMARY KEY,
     id_aluno SERIAL,
     id_docente SERIAL,
@@ -188,7 +208,8 @@ VALUES (2, 1, 3, '2022-08-01 07:00:00', '2022-12-15 11:00:00', 7.0);
 INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (2, 2, 2, '2022-08-01 10:30:00', '2022-12-15 15:30:00', 8.0);
 INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
-VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
+VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);*/
+
 
 
 CREATE FUNCTION lista_pessoaperfil()
@@ -238,7 +259,8 @@ CREATE TYPE linha3 AS (
     aidpessoa TEXT,
     cunt INTEGER
 );
-CREATE FUNCTION consulta3()
+
+/*CREATE FUNCTION consulta3()
 RETURNS SETOF linha3 AS $$
     SELECT d.codigo AS disciplina, d.ementa, d.data_criacao, 
           doc.id_pessoa AS cpf_professor, a.id_pessoa AS aluno, COUNT(*) AS count
@@ -262,7 +284,7 @@ RETURNS SETOF linha4 AS $$
     GROUP BY d.id
     ORDER BY COUNT(*) DESC
     LIMIT 5;
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL;*/
 
 -- SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
 -- FROM perfil_pessoa pp, perfil p, servico s
