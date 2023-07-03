@@ -179,6 +179,14 @@ CREATE TABLE oferecimento (
   FOREIGN KEY (id_docente) REFERENCES docente(id),
   FOREIGN KEY (id_disciplina) REFERENCES disciplina(id)
 );
+INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+VALUES (1, 1, '2022-01-01', '2022-06-30', 'OFER001');
+INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+VALUES (2, 3, '2022-02-15', '2022-07-31', 'OFER002');
+INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+VALUES (2, 1, '2022-02-15', '2022-07-31', 'OFER004');
+INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+VALUES (3, 2, '2022-03-10', '2022-08-15', 'OFER003');
 
 CREATE TABLE matricula (
   id SERIAL PRIMARY KEY,
@@ -188,6 +196,14 @@ CREATE TABLE matricula (
   FOREIGN KEY (id_oferecimento) REFERENCES oferecimento(id),
   FOREIGN KEY (id_aluno) REFERENCES aluno(id)
 );
+INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+VALUES (1, 1, 8.5);
+INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+VALUES (2, 3, 7.2);
+INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+VALUES (2, 1, 7.1);
+INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+VALUES (3, 2, 6.8);
 
 /*CREATE TABLE matricula (
     id SERIAL PRIMARY KEY,
@@ -228,7 +244,6 @@ CREATE TYPE linha1 AS (
     pnome TEXT,
     snome TEXT
 );
-
 CREATE FUNCTION consulta1()
 RETURNS TABLE (pnome TEXT, snome TEXT) AS $$
   SELECT p.tipo as pnome, s.tipo as snome
@@ -241,8 +256,9 @@ CREATE TYPE linha2 AS (
     pcodigo TEXT,
     total_servicos INTEGER
 );
+-- RETURNS TABLE (pcodigo TEXT, total_servicos INTEGER) AS $$
 CREATE FUNCTION consulta2()
-RETURNS TABLE (pcodigo TEXT, total_servicos INTEGER) AS $$
+RETURNS SETOF linha2 AS $$
     SELECT p.codigo AS pcodigo, COUNT(*) AS total_servicos
     FROM perfil_pessoa pp, perfil p, servico s
     WHERE pp.id_perfil = p.id  AND p.id = s.id_perfil
@@ -250,62 +266,36 @@ RETURNS TABLE (pcodigo TEXT, total_servicos INTEGER) AS $$
     ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
 
-
 CREATE TYPE linha3 AS (
     dcodigo TEXT,
     dementa TEXT,
-    ddata   TEXT,
-    didpessoa TEXT,
-    aidpessoa TEXT,
-    cunt INTEGER
+    count INTEGER
 );
-
-/*CREATE FUNCTION consulta3()
+CREATE FUNCTION consulta3()
 RETURNS SETOF linha3 AS $$
-    SELECT d.codigo AS disciplina, d.ementa, d.data_criacao, 
-          doc.id_pessoa AS cpf_professor, a.id_pessoa AS aluno, COUNT(*) AS count
-    FROM disciplina d, matricula m, docente doc, aluno a
-    WHERE d.id = m.id_disciplina AND doc.id = m.id_docente AND a.id = m.id_aluno
-    GROUP BY d.codigo, d.ementa, d.data_criacao, doc.id_pessoa, a.id_pessoa
-    ORDER BY COUNT(*) DESC
+    SELECT d.codigo, d.ementa, COUNT(o.id) AS quantidade_oferecimentos
+    FROM disciplina d, oferecimento o
+    WHERE d.id = o.id_disciplina
+    GROUP BY d.codigo, d.ementa
+    ORDER BY COUNT(o.id) DESC
     LIMIT 5;
 $$ LANGUAGE SQL;
 
 CREATE TYPE linha4 AS (
-    sidpessoa TEXT,
+    idpessoa TEXT,
+    pnome TEXT,
     count INTEGER
 );
 CREATE FUNCTION consulta4()
 RETURNS SETOF linha4 AS $$
-    SELECT d.id_pessoa AS docente, COUNT(*) AS total_disciplinas_ministradas
-    FROM docente d, matricula m
-    WHERE d.id = m.id_docente AND m.data_ini >= '2020-05-01' 
-          AND m.data_fim <= '2023-05-31'
-    GROUP BY d.id
+    SELECT p.id AS id, p.nome AS docente, COUNT(*) AS total_disciplinas_ministradas
+    FROM docente d, oferecimento o, pessoa p
+    WHERE d.id = o.id_docente AND o.data_inicio >= '2020-05-01' 
+          AND o.data_fim <= '2023-05-31' AND d.id_pessoa = p.id
+    GROUP BY p.id, p.nome
     ORDER BY COUNT(*) DESC
     LIMIT 5;
-$$ LANGUAGE SQL;*/
+$$ LANGUAGE SQL;
 
--- SELECT p.codigo AS perfil, COUNT(*) AS total_servicos
--- FROM perfil_pessoa pp, perfil p, servico s
--- WHERE pp.id_perfil = p.id  AND p.id = s.id_perfil
--- GROUP BY p.codigo
--- ORDER BY total_servicos ASC;
-
--- SELECT d.codigo AS disciplina, d.ementa, d.data_criacao, 
---     doc.id_pessoa AS cpf_professor, a.id_pessoa AS aluno, COUNT(*) AS count
--- FROM disciplina d, matricula m, docente doc, aluno a
--- WHERE d.id = m.id_disciplina AND doc.id = m.id_docente AND a.id = m.id_aluno
--- GROUP BY d.codigo, d.ementa, d.data_criacao, doc.id_pessoa, a.id_pessoa
--- ORDER BY COUNT(*) DESC
--- LIMIT 5;
-
--- SELECT d.id_pessoa AS docente, COUNT(*) AS total_disciplinas_ministradas
--- FROM docente d, matricula m
--- WHERE d.id = m.id_docente AND m.data_ini >= '2020-05-01' 
---       AND m.data_fim <= '2023-05-31'
--- GROUP BY d.id
--- ORDER BY COUNT(*) DESC
--- LIMIT 5;
 
 

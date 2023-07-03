@@ -36,7 +36,7 @@ public class PessoasController {
 
     @GetMapping("/pessoa/{id}")
     public String editPessoa(Model model, @PathVariable Integer id) {
-        Pessoa pessoa = jdbcTemplate.queryForObject("SELECT cpf,nome,endereco,instituicao,login,senha,data_nasc FROM pessoa WHERE id = ?", 
+        Pessoa pessoa = jdbcTemplate.queryForObject("SELECT * FROM pessoa WHERE id = ?", 
             new PessoaRowMapper(), id);
         model.addAttribute("pessoa", pessoa);
         return "pessoa";
@@ -73,14 +73,14 @@ public class PessoasController {
 
     @DeleteMapping("/pessoa/{id}")
     public String deletePessoa(@PathVariable Integer id) {
-        jdbcTemplate.update(
-            "DELETE FROM pessoa WHERE ID = ?",
-            id
-        );
+        jdbcTemplate.update("DELETE FROM aluno WHERE id_pessoa = ?", id);
+        jdbcTemplate.update("DELETE FROM docente WHERE id_pessoa = ?", id);
+        jdbcTemplate.update("DELETE FROM funcionario WHERE id_pessoa = ?", id);
+        jdbcTemplate.update("DELETE FROM pessoa WHERE id = ?", id);
         return "redirect:/pessoas";
     }
 
-
+    
 }
 
 

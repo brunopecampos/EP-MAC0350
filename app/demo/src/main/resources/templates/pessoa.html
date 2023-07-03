@@ -8,7 +8,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm" id="mainNav">
         <div class="container px-5">
-            <a class="navbar-brand fw-bold" href="#page-top">MAC0350 - Demo - Cadastro de Pessoa</a>            
+            <a class="navbar-brand fw-bold" href="#page-top">MAC0350 - Cadastro de Pessoa</a>            
         </div>
     </nav>
     <div class="container px-5 pt-5">
@@ -17,12 +17,32 @@
                 <form action="#" th:action="@{/pessoa}" th:object="${pessoa}" method="post">
                     <input type="hidden" th:field="*{id}" />
                     <div class="mb-3">
-                        <label for="nusp" class="form-label">No. USP</label>
-                        <input type="text" class="form-control" id="nusp" placeholder="No. USP" th:field="*{nusp}" >
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" placeholder="CPF" th:field="*{cpf}" >
                     </div>
                     <div class="mb-3">
                         <label for="nome" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="nome" placeholder="Nome da pessoa" th:field="*{nome}" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereco</label>
+                        <input type="text" class="form-control" id="endereco" placeholder="Endereco" th:field="*{endereco}" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="instituicao" class="form-label">Instituicao</label>
+                        <input type="text" class="form-control" id="instituicao" placeholder="Instituicao" th:field="*{instituicao}" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="login" class="form-label">login</label>
+                        <input type="text" class="form-control" id="login" placeholder="login" th:field="*{login}" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">senha</label>
+                        <input type="text" class="form-control" id="senha" placeholder="senha" th:field="*{senha}" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="data_nasc" class="form-label">data_nasc</label>
+                        <input type="datetime" class="form-control" id="data_nasc" placeholder="data_nasc" th:field="*{data_nasc}" >
                     </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                     <a href="#" th:href="@{/pessoas}" class="btn btn-secondary">Voltar</a>
