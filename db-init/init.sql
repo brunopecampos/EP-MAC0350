@@ -47,24 +47,24 @@ CREATE TABLE pessoa (
   instituicao TEXT,
   login TEXT,
   senha TEXT,
-  data_nasc TIMESTAMP
+  dataNasc TEXT
 );
 
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('12345678901', 'João Silva', 'Rua Principal, 123', 'Universidade XYZ', 'joaosilva', 'senhasecreta', '2000-01-01 00:00:00');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('2134564901', 'Bruno Ferber', 'Rua Secundaria, 321', 'Universidade ABC', 'bruno', 'senhasecreta', '2003-11-01 04:04:40');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('12399978901', 'Paulo', 'Rua Principal, 321', 'Universidade ABC', 'paulo', 'senhasecreta', '2002-02-02 00:02:02');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('98765432101', 'Maria', 'Avenida Central, 123', 'Universidade XYZ', 'maria', 'senha123', '1990-10-15 08:30:00');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('11122233344', 'Ana', 'Praça Principal, 789', 'Faculdade XYZ', 'ana', 'abcd123', '1998-12-01 18:45:00');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('11111111111', 'Carlos', 'Av. Central, 456', 'Universidade XYZ', 'carlos', 'senha123', '1995-05-15 09:30:00');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('22222222222', 'Juliana', 'Rua Secundária, 789', 'Faculdade ABC', 'juliana', 'abcd123', '1997-08-20 14:45:00');
-INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc)
+INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc)
 VALUES ('33333333333', 'Mariana', 'Rua Principal, 654', 'Universidade XYZ', 'mariana', 'senha456', '1993-12-10 11:00:00');
 
 CREATE TABLE aluno (

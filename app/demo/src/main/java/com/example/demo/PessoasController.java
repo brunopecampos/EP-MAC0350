@@ -47,7 +47,7 @@ public class PessoasController {
         
         if (pessoa.getId() > 0) {
             jdbcTemplate.update(
-                "UPDATE pessoa WHERE id = ?, WHERE cpf = ?,WHERE nome = ?, WHERE endereco = ?, WHERE instituicao = ?, WHERE login = ?, WHERE senha = ?, WHERE data_nasc = ? ",
+                "UPDATE pessoa WHERE id = ?, WHERE cpf = ?,WHERE nome = ?, WHERE endereco = ?, WHERE instituicao = ?, WHERE login = ?, WHERE senha = ?, WHERE dataNasc = ? ",
                 pessoa.getId(),
                 pessoa.getCpf(),
                 pessoa.getNome(),
@@ -59,7 +59,7 @@ public class PessoasController {
             );
         } else {
             jdbcTemplate.update(
-                "INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, data_nasc) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                "INSERT INTO pessoa (cpf, nome, endereco, instituicao, login, senha, dataNasc) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                 pessoa.getCpf(),
                 pessoa.getNome(), 
                 pessoa.getEndereco(),

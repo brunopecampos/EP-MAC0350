@@ -9,7 +9,7 @@ public class Pessoa {
     private String instituicao;
     private String login;
     private String senha;
-    private String data_nasc;
+    private String dataNasc;
 
     public Pessoa() {
         this.id = -1;
@@ -76,11 +76,11 @@ public class Pessoa {
     }
 
     public String getDataNasc() {
-        return this.data_nasc;
+        return this.dataNasc;
     }
 
-    public void setDataNasc(String data_nasc) {
-        this.data_nasc = data_nasc;
+    public void setDataNasc(String dataNasc) {
+        this.dataNasc = dataNasc;
     }
 
 
