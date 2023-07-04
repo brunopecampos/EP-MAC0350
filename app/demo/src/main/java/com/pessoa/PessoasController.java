@@ -44,18 +44,19 @@ public class PessoasController {
 
     @PostMapping("/pessoa")
     public String submitPessoa(@ModelAttribute Pessoa pessoa, Model model) {
-        
+        System.out.println(pessoa.getCpf());
+        System.out.println(pessoa.getId());
         if (pessoa.getId() > 0) {
             jdbcTemplate.update(
-                "UPDATE pessoa WHERE id = ?, WHERE cpf = ?,WHERE nome = ?, WHERE endereco = ?, WHERE instituicao = ?, WHERE login = ?, WHERE senha = ?, WHERE dataNasc = ? ",
-                pessoa.getId(),
+                "UPDATE pessoa SET cpf = ?, nome = ?, endereco = ?, instituicao = ?, login = ?, senha = ?, datanasc = ? WHERE id = ?",
                 pessoa.getCpf(),
                 pessoa.getNome(),
                 pessoa.getEndereco(),
                 pessoa.getInstituicao(),
                 pessoa.getLogin(),
                 pessoa.getSenha(),
-                pessoa.getDataNasc()
+                pessoa.getDataNasc(),
+                pessoa.getId()
             );
         } else {
             jdbcTemplate.update(
@@ -73,10 +74,10 @@ public class PessoasController {
 
     @DeleteMapping("/pessoa/{id}")
     public String deletePessoa(@PathVariable Integer id) {
-        jdbcTemplate.update("DELETE FROM aluno WHERE id_pessoa = ?", id);
-        jdbcTemplate.update("DELETE FROM docente WHERE id_pessoa = ?", id);
-        jdbcTemplate.update("DELETE FROM funcionario WHERE id_pessoa = ?", id);
         jdbcTemplate.update("DELETE FROM pessoa WHERE id = ?", id);
+        /*jdbcTemplate.update("DELETE FROM aluno WHERE id_pessoa = ?", id);
+        jdbcTemplate.update("DELETE FROM docente WHERE id_pessoa = ?", id);
+        jdbcTemplate.update("DELETE FROM funcionario WHERE id_pessoa = ?", id);*/
         return "redirect:/pessoas";
     }
 
