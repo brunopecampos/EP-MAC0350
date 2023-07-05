@@ -212,7 +212,7 @@ VALUES (2, 1, 7.1);
 INSERT INTO matricula (id_oferecimento, id_aluno, nota)
 VALUES (3, 2, 6.8);*/
 
-CREATE TABLE matricula (
+CREATE TABLE oferecimento (
     id SERIAL PRIMARY KEY,
     id_aluno SERIAL,
     id_docente SERIAL,
@@ -224,13 +224,13 @@ CREATE TABLE matricula (
     FOREIGN KEY (id_docente) REFERENCES docente (id) ON DELETE CASCADE,
     FOREIGN KEY (id_disciplina) REFERENCES disciplina (id) ON DELETE CASCADE
 );
-INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (1, 1, 1, '2022-08-01 08:00:00', '2022-12-15 12:00:00', 7.5);
-INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (2, 1, 3, '2022-08-01 07:00:00', '2022-12-15 11:00:00', 7.0);
-INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (2, 2, 2, '2022-08-01 10:30:00', '2022-12-15 15:30:00', 8.0);
-INSERT INTO matricula (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
 

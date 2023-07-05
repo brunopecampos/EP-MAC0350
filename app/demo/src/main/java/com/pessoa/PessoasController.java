@@ -44,8 +44,6 @@ public class PessoasController {
 
     @PostMapping("/pessoa")
     public String submitPessoa(@ModelAttribute Pessoa pessoa, Model model) {
-        System.out.println(pessoa.getCpf());
-        System.out.println(pessoa.getId());
         if (pessoa.getId() > 0) {
             jdbcTemplate.update(
                 "UPDATE pessoa SET cpf = ?, nome = ?, endereco = ?, instituicao = ?, login = ?, senha = ?, datanasc = ? WHERE id = ?",
