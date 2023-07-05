@@ -26,7 +26,7 @@ public class PessoaRowMapper implements RowMapper<Pessoa> {
         pessoa.setInstituicao(rs.getString("instituicao"));
         pessoa.setLogin(rs.getString("login"));
         pessoa.setSenha(rs.getString("senha"));
-        pessoa.setDataNasc(rs.getString("data_nasc"));
+        pessoa.setDataNasc(rs.getString("datanasc"));
         return pessoa;
     }
 }

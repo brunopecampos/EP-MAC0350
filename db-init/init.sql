@@ -73,6 +73,7 @@ CREATE TABLE aluno (
   nota_ingresso REAL,
   curso TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
+  ON DELETE CASCADE
 );
 INSERT INTO aluno (id_pessoa, nota_ingresso, curso)
 VALUES (1, 7.8, 'Administração');
@@ -86,6 +87,7 @@ CREATE TABLE funcionario (
   id_pessoa SERIAL,
   funcao TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
+  ON DELETE CASCADE
 );
 INSERT INTO funcionario (id_pessoa, funcao)
 VALUES (4, 'Analista de Marketing');
@@ -97,6 +99,7 @@ CREATE TABLE docente (
   id_pessoa SERIAL,
   especialidade TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
+  ON DELETE CASCADE
 );
 INSERT INTO docente (id_pessoa, especialidade)
 VALUES (6, 'Matemática');
@@ -125,7 +128,8 @@ CREATE TABLE servico (
     codigo TEXT UNIQUE,
     tipo TEXT,
     descricao TEXT,
-    FOREIGN KEY (id_perfil) REFERENCES perfil (id)
+    FOREIGN KEY (id_perfil) REFERENCES perfil (id) 
+    ON DELETE CASCADE
 );
 INSERT INTO servico (id_perfil, codigo, tipo, descricao)
 VALUES (3, 'SRV001', 'Verificação', 'Possibilita ver notas');
@@ -140,8 +144,10 @@ CREATE TABLE perfil_pessoa (
     id SERIAL PRIMARY KEY,
     id_pessoa SERIAL,
     id_perfil SERIAL,
-    FOREIGN KEY (id_pessoa) REFERENCES pessoa (id),
-    FOREIGN KEY (id_perfil) REFERENCES perfil (id)
+    FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
+    ON DELETE CASCADE,
+    FOREIGN KEY (id_perfil) REFERENCES perfil (id) 
+    ON DELETE CASCADE
 );
 INSERT INTO perfil_pessoa (id_pessoa, id_perfil)
 VALUES (5, 2);
@@ -177,9 +183,9 @@ CREATE TABLE oferecimento (
     data_ini TIMESTAMP,
     data_fim TIMESTAMP,
     nota REAL,
-    FOREIGN KEY (id_aluno) REFERENCES aluno (id),
-    FOREIGN KEY (id_docente) REFERENCES docente (id),
-    FOREIGN KEY (id_disciplina) REFERENCES disciplina (id)
+    FOREIGN KEY (id_aluno) REFERENCES aluno (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_docente) REFERENCES docente (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_disciplina) REFERENCES disciplina (id) ON DELETE CASCADE
 );
 INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (1, 1, 1, '2022-08-01 08:00:00', '2022-12-15 12:00:00', 7.5);
@@ -246,11 +252,12 @@ $$ LANGUAGE SQL;
 -- Muito esquito pq como vc sabe qual perfil fez tal açao se mais de um perfil
 -- pode realizar o mesmo servico e uma pessoa pode ter mais de um perfil
 
-CREATE TYPE linha3 AS (
+/*CREATE TYPE linha3 AS (
     dcodigo TEXT,
     dementa TEXT,
     count INTEGER
 );
+
 CREATE FUNCTION consulta3()
 RETURNS SETOF linha3 AS $$
     SELECT d.codigo, d.ementa, COUNT(o.id) AS quantidade_oferecimentos
@@ -277,7 +284,7 @@ RETURNS SETOF linha4 AS $$
     GROUP BY id_docente
     ORDER BY total_tuplas DESC
     LIMIT 5;
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL;*/
 
 
 
