@@ -175,43 +175,6 @@ VALUES ('HIS001', 'História do Brasil', '2022-03-20 10:15:00');
 INSERT INTO disciplina (codigo, ementa, data_criacao)
 VALUES ('ENG001', 'Introdução à Engenharia', '2022-04-10 16:45:00');
 
-/*CREATE TABLE oferecimento (
-  id SERIAL PRIMARY KEY,
-  id_docente SERIAL,
-  id_disciplina SERIAL,
-  data_inicio TIMESTAMP,
-  data_fim TIMESTAMP,
-  codigo TEXT UNIQUE,
-  FOREIGN KEY (id_docente) REFERENCES docente(id) ON CASCADE DELETE,
-  FOREIGN KEY (id_disciplina) REFERENCES disciplina(id) ON CASCADE DELETE
-);
-
-INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
-VALUES (1, 1, '2022-01-01', '2022-06-30', 'OFER001');
-INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
-VALUES (2, 3, '2022-02-15', '2022-07-31', 'OFER002');
-INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
-VALUES (2, 1, '2022-02-15', '2022-07-31', 'OFER004');
-INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
-VALUES (3, 2, '2022-03-10', '2022-08-15', 'OFER003');
-
-CREATE TABLE matricula (
-  id SERIAL PRIMARY KEY,
-  id_oferecimento SERIAL,
-  id_aluno SERIAL,
-  nota REAL,
-  FOREIGN KEY (id_oferecimento) REFERENCES oferecimento(id) ON DELETE CASCADE,
-  FOREIGN KEY (id_aluno) REFERENCES aluno(id) ON DELETE CASCADE
-);
-INSERT INTO matricula (id_oferecimento, id_aluno, nota)
-VALUES (1, 1, 8.5);
-INSERT INTO matricula (id_oferecimento, id_aluno, nota)
-VALUES (2, 3, 7.2);
-INSERT INTO matricula (id_oferecimento, id_aluno, nota)
-VALUES (2, 1, 7.1);
-INSERT INTO matricula (id_oferecimento, id_aluno, nota)
-VALUES (3, 2, 6.8);*/
-
 CREATE TABLE oferecimento (
     id SERIAL PRIMARY KEY,
     id_aluno SERIAL,
@@ -227,13 +190,33 @@ CREATE TABLE oferecimento (
 INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (1, 1, 1, '2022-08-01 08:00:00', '2022-12-15 12:00:00', 7.5);
 INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
-VALUES (2, 1, 3, '2022-08-01 07:00:00', '2022-12-15 11:00:00', 7.0);
+VALUES (2, 1, 1, '2022-08-01 08:00:00', '2022-12-15 12:00:00', 5.5);
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+VALUES (3, 1, 1, '2022-08-01 08:00:00', '2022-12-15 12:00:00', 5.5);
+INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
+VALUES (2, 1, 1, '2022-08-01 07:00:00', '2022-12-15 11:00:00', 7.0);
 INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (2, 2, 2, '2022-08-01 10:30:00', '2022-12-15 15:30:00', 8.0);
 INSERT INTO oferecimento (id_aluno, id_docente, id_disciplina, data_ini, data_fim, nota)
 VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
+CREATE TABLE historico_servico (
+    id SERIAL PRIMARY KEY,
+    id_pessoa SERIAL,
+    id_servico SERIAL,
+    data TIMESTAMP,
+    UNIQUE (id_pessoa, id_servico, data),
+    FOREIGN KEY (id_pessoa) REFERENCES pessoa (id),
+    FOREIGN KEY (id_servico) REFERENCES servico(id)
+);
+INSERT INTO historico_servico (id_pessoa, id_servico, data)
+VALUES (1, 2, '2023-05-17 10:30:00'),
+       (2, 3, '2023-05-18 14:15:00'),
+       (2, 1, '2023-01-18 14:15:00'),
+       (3, 1, '2023-05-19 09:00:00');
 
+
+/*-----------------CONSULTAS---------------------*/
 
 CREATE FUNCTION lista_pessoaperfil()
 RETURNS SETOF perfil_pessoa AS $$
@@ -241,37 +224,33 @@ RETURNS SETOF perfil_pessoa AS $$
   ORDER BY id_perfil
 $$ LANGUAGE SQL;
 
--- CREATE TYPE minha_linha AS (
---     coluna1 INTEGER,
---     coluna2 TEXT,
---     coluna3 DATE
+-- CREATE TYPE linha1 AS (
+--     pnome TEXT,
+--     snome TEXT
 -- );
-
-CREATE TYPE linha1 AS (
-    pnome TEXT,
-    snome TEXT
-);
 CREATE FUNCTION consulta1()
-RETURNS TABLE (pnome TEXT, snome TEXT) AS $$
-  SELECT p.tipo as pnome, s.tipo as snome
+RETURNS TABLE (nome_pessoa TEXT, nome_servico TEXT) AS $$
+  SELECT p.tipo as nome_pessoa, s.tipo as nome_servico
   FROM servico s, perfil p
   WHERE  p.id = s.id_perfil
   ORDER BY p.tipo;
 $$ LANGUAGE SQL;
 
-CREATE TYPE linha2 AS (
-    pcodigo TEXT,
-    total_servicos INTEGER
-);
--- RETURNS TABLE (pcodigo TEXT, total_servicos INTEGER) AS $$
+-- CREATE TYPE linha2 AS (
+--     pcodigo TEXT,
+--     total_servicos INTEGER
+-- );
 CREATE FUNCTION consulta2()
-RETURNS SETOF linha2 AS $$
-    SELECT p.codigo AS pcodigo, COUNT(*) AS total_servicos
-    FROM perfil_pessoa pp, perfil p, servico s
-    WHERE pp.id_perfil = p.id  AND p.id = s.id_perfil
+RETURNS TABLE (codigo_perfil TEXT, total_servicos INTEGER) AS $$
+    SELECT p.codigo AS codigo_perfil, COUNT(*) AS total_servicos
+    FROM perfil p, servico s, historico_servico h, perfil_pessoa pp
+    WHERE h.id_servico = s.id AND p.id = pp.id_perfil AND
+          h.id_pessoa = pp.id_pessoa  
     GROUP BY p.codigo
     ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
+-- Muito esquito pq como vc sabe qual perfil fez tal açao se mais de um perfil
+-- pode realizar o mesmo servico e uma pessoa pode ter mais de um perfil
 
 /*CREATE TYPE linha3 AS (
     dcodigo TEXT,
@@ -290,20 +269,60 @@ RETURNS SETOF linha3 AS $$
 $$ LANGUAGE SQL;
 
 CREATE TYPE linha4 AS (
-    idpessoa TEXT,
-    pnome TEXT,
+    id_docente TEXT,
     count INTEGER
 );
 CREATE FUNCTION consulta4()
 RETURNS SETOF linha4 AS $$
-    SELECT p.id AS id, p.nome AS docente, COUNT(*) AS total_disciplinas_ministradas
-    FROM docente d, oferecimento o, pessoa p
-    WHERE d.id = o.id_docente AND o.data_inicio >= '2020-05-01' 
-          AND o.data_fim <= '2023-05-31' AND d.id_pessoa = p.id
-    GROUP BY p.id, p.nome
-    ORDER BY COUNT(*) DESC
+    SELECT id_docente, COUNT(*) AS total_tuplas
+    FROM (
+      SELECT id_docente, COUNT(*) AS count
+      FROM oferecimento
+      WHERE data_ini >= '2020-05-01' AND data_fim <= '2023-05-31'
+      GROUP BY id_docente, id_disciplina, data_ini
+    ) AS subconsulta
+    GROUP BY id_docente
+    ORDER BY total_tuplas DESC
     LIMIT 5;
 $$ LANGUAGE SQL;*/
 
 
 
+/*#########################################################################
+   tabelas associadas ao erro de fazer a modelagem utilizando agragaçao*/
+
+-- CREATE TABLE oferecimento (
+--   id SERIAL PRIMARY KEY,
+--   id_docente SERIAL,
+--   id_disciplina SERIAL,
+--   data_inicio TIMESTAMP,
+--   data_fim TIMESTAMP,
+--   codigo TEXT UNIQUE,
+--   FOREIGN KEY (id_docente) REFERENCES docente(id),
+--   FOREIGN KEY (id_disciplina) REFERENCES disciplina(id)
+-- );
+-- INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+-- VALUES (1, 1, '2022-01-01', '2022-06-30', 'OFER001');
+-- INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+-- VALUES (2, 3, '2022-02-15', '2022-07-31', 'OFER002');
+-- INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+-- VALUES (2, 1, '2022-02-15', '2022-07-31', 'OFER004');
+-- INSERT INTO oferecimento (id_docente, id_disciplina, data_inicio, data_fim, codigo)
+-- VALUES (3, 2, '2022-03-10', '2022-08-15', 'OFER003');
+
+-- CREATE TABLE matricula (
+--   id SERIAL PRIMARY KEY,
+--   id_oferecimento SERIAL,
+--   id_aluno SERIAL,
+--   nota REAL,
+--   FOREIGN KEY (id_oferecimento) REFERENCES oferecimento(id),
+--   FOREIGN KEY (id_aluno) REFERENCES aluno(id)
+-- );
+-- INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+-- VALUES (1, 1, 8.5);
+-- INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+-- VALUES (2, 3, 7.2);
+-- INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+-- VALUES (2, 1, 7.1);
+-- INSERT INTO matricula (id_oferecimento, id_aluno, nota)
+-- VALUES (3, 2, 6.8);
