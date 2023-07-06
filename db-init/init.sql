@@ -260,13 +260,11 @@ $$ LANGUAGE SQL;
 
 CREATE FUNCTION consulta3()
 RETURNS SETOF linha3 AS $$
-    SELECT d.codigo, d.ementa, COUNT(o.id) AS quantidade_oferecimentos
-    FROM disciplina d, oferecimento o
-    WHERE d.id = o.id_disciplina
-    GROUP BY d.codigo, d.ementa
-    ORDER BY COUNT(o.id) DESC
-    LIMIT 5;
-$$ LANGUAGE SQL;
+    select id_disciplina, data_ini, COUNT(*) AS count
+    from oferecimento
+    group by id_disciplina, data_ini
+    ;
+$$ LANGUAGE SQL;*/
 
 CREATE TYPE linha4 AS (
     id_docente TEXT,
@@ -284,7 +282,7 @@ RETURNS SETOF linha4 AS $$
     GROUP BY id_docente
     ORDER BY total_tuplas DESC
     LIMIT 5;
-$$ LANGUAGE SQL;*/
+$$ LANGUAGE SQL;
 
 
 
