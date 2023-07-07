@@ -69,7 +69,7 @@ VALUES ('33333333333', 'Mariana', 'Rua Principal, 654', 'Universidade XYZ', 'mar
 
 CREATE TABLE aluno (
   id SERIAL PRIMARY KEY,
-  id_pessoa SERIAL,
+  id_pessoa INTEGER,
   nota_ingresso REAL,
   curso TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
@@ -84,7 +84,7 @@ VALUES (3, 6.5, 'Engenharia Civil');
 
 CREATE TABLE funcionario (
   id SERIAL PRIMARY KEY,
-  id_pessoa SERIAL,
+  id_pessoa INTEGER,
   funcao TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
   ON DELETE CASCADE
@@ -96,7 +96,7 @@ VALUES (5, 'Gerente de Projetos');
 
 CREATE TABLE docente (
   id SERIAL PRIMARY KEY,
-  id_pessoa SERIAL,
+  id_pessoa INTEGER,
   especialidade TEXT,
   FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
   ON DELETE CASCADE
@@ -124,7 +124,7 @@ VALUES ('ADM', 'Administrador');
 
 CREATE TABLE servico (
     id SERIAL PRIMARY KEY,
-    id_perfil SERIAL,
+    id_perfil INTEGER,
     codigo TEXT UNIQUE,
     tipo TEXT,
     descricao TEXT,
@@ -142,8 +142,8 @@ VALUES (2, 'SRV005', 'Verificação individual', 'Possibilita ver notas individu
 
 CREATE TABLE perfil_pessoa (
     id SERIAL PRIMARY KEY,
-    id_pessoa SERIAL,
-    id_perfil SERIAL,
+    id_pessoa INTEGER,
+    id_perfil INTEGER,
     FOREIGN KEY (id_pessoa) REFERENCES pessoa (id)
     ON DELETE CASCADE,
     FOREIGN KEY (id_perfil) REFERENCES perfil (id) 
@@ -177,9 +177,9 @@ VALUES ('ENG001', 'Introdução à Engenharia', '2022-04-10 16:45:00');
 
 CREATE TABLE oferecimento (
     id SERIAL PRIMARY KEY,
-    id_aluno SERIAL,
-    id_docente SERIAL,
-    id_disciplina SERIAL,
+    id_aluno INTEGER,
+    id_docente INTEGER,
+    id_disciplina INTEGER,
     data_ini TIMESTAMP,
     data_fim TIMESTAMP,
     nota REAL,
@@ -202,8 +202,8 @@ VALUES (3, 3, 3, '2022-08-01 13:45:00', '2022-12-15 17:00:00', 6.8);
 
 CREATE TABLE historico_servico (
     id SERIAL PRIMARY KEY,
-    id_pessoa SERIAL,
-    id_servico SERIAL,
+    id_pessoa INTEGER,
+    id_servico INTEGER,
     data TIMESTAMP,
     UNIQUE (id_pessoa, id_servico, data),
     FOREIGN KEY (id_pessoa) REFERENCES pessoa (id),
@@ -249,22 +249,19 @@ RETURNS TABLE (codigo_perfil TEXT, total_servicos INTEGER) AS $$
     GROUP BY p.codigo
     ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
--- Muito esquito pq como vc sabe qual perfil fez tal açao se mais de um perfil
--- pode realizar o mesmo servico e uma pessoa pode ter mais de um perfil
-
-/*CREATE TYPE linha3 AS (
-    dcodigo TEXT,
-    dementa TEXT,
-    count INTEGER
-);
 
 CREATE FUNCTION consulta3()
-RETURNS SETOF linha3 AS $$
-    select id_disciplina, data_ini, COUNT(*) AS count
-    from oferecimento
-    group by id_disciplina, data_ini
-    ;
-$$ LANGUAGE SQL;*/
+RETURNS TABLE (id_disciplina INTEGER, id_docente INTEGER, id_aluno INTEGER) AS $$
+    select  o.id_disciplina, o.id_docente, o.id_aluno
+    from (select id_disciplina, COUNT(*) as count2
+          from  (select id_disciplina, COUNT(*) AS count
+                from oferecimento
+                group by id_disciplina, data_ini) AS sub
+          GROUP BY id_disciplina
+          ORDER BY COUNT(*) DESC
+          LIMIT 5) as sub2, oferecimento o
+    where sub2.id_disciplina = o.id_disciplina
+$$ LANGUAGE SQL;
 
 CREATE TYPE linha4 AS (
     id_docente TEXT,
