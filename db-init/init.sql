@@ -213,7 +213,8 @@ INSERT INTO historico_servico (id_pessoa, id_servico, data)
 VALUES (1, 2, '2023-05-17 10:30:00'),
        (2, 3, '2023-05-18 14:15:00'),
        (2, 1, '2023-01-18 14:15:00'),
-       (3, 1, '2023-05-19 09:00:00');
+       (3, 1, '2023-05-19 09:00:00'),
+       (8, 4, '2023-05-19 09:00:00');
 
 
 /*-----------------CONSULTAS---------------------*/
@@ -243,9 +244,8 @@ $$ LANGUAGE SQL;
 CREATE FUNCTION consulta2()
 RETURNS TABLE (codigo_perfil TEXT, total_servicos INTEGER) AS $$
     SELECT p.codigo AS codigo_perfil, COUNT(*) AS total_servicos
-    FROM perfil p, servico s, historico_servico h, perfil_pessoa pp
-    WHERE h.id_servico = s.id AND p.id = pp.id_perfil AND
-          h.id_pessoa = pp.id_pessoa  
+    FROM perfil p, servico s, historico_servico h
+    WHERE h.id_servico = s.id AND s.id_perfil = p.id   
     GROUP BY p.codigo
     ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
