@@ -230,8 +230,8 @@ $$ LANGUAGE SQL;
 --     snome TEXT
 -- );
 CREATE FUNCTION consulta1()
-RETURNS TABLE (nome_pessoa TEXT, nome_servico TEXT) AS $$
-  SELECT p.tipo as nome_pessoa, s.tipo as nome_servico
+RETURNS TABLE (perfil TEXT, nome_servico TEXT) AS $$
+  SELECT p.tipo as perfil, s.tipo as nome_servico
   FROM servico s, perfil p
   WHERE  p.id = s.id_perfil
   ORDER BY p.tipo;
@@ -242,42 +242,40 @@ $$ LANGUAGE SQL;
 --     total_servicos INTEGER
 -- );
 CREATE FUNCTION consulta2()
-RETURNS TABLE (codigo_perfil TEXT, total_servicos INTEGER) AS $$
-    SELECT p.codigo AS codigo_perfil, COUNT(*) AS total_servicos
+RETURNS TABLE (tipo_perfil TEXT, total_servicos INTEGER) AS $$
+    SELECT p.tipo AS tipo_perfil, COUNT(*) AS total_servicos
     FROM perfil p, servico s, historico_servico h
     WHERE h.id_servico = s.id AND s.id_perfil = p.id   
-    GROUP BY p.codigo
+    GROUP BY p.tipo
     ORDER BY total_servicos ASC;
 $$ LANGUAGE SQL;
 
 CREATE FUNCTION consulta3()
-RETURNS TABLE (id_disciplina INTEGER, id_docente INTEGER, id_aluno INTEGER) AS $$
-    select  o.id_disciplina, o.id_docente, o.id_aluno
+RETURNS TABLE (disciplina TEXT, nome_docente TEXT, nome_aluno TEXT) AS $$
+    select  d.codigo, p1.nome, p2.nome
     from (select id_disciplina, COUNT(*) as count2
           from  (select id_disciplina, COUNT(*) AS count
                 from oferecimento
                 group by id_disciplina, data_ini) AS sub
           GROUP BY id_disciplina
           ORDER BY COUNT(*) DESC
-          LIMIT 5) as sub2, oferecimento o
-    where sub2.id_disciplina = o.id_disciplina
+          LIMIT 5) as sub2, oferecimento o, disciplina d, pessoa p1, pessoa p2
+    where sub2.id_disciplina = o.id_disciplina AND o.id_disciplina = d.id AND 
+          o.id_docente = p1.id AND o.id_aluno = p2.id
 $$ LANGUAGE SQL;
 
-CREATE TYPE linha4 AS (
-    id_docente TEXT,
-    count INTEGER
-);
 CREATE FUNCTION consulta4()
-RETURNS SETOF linha4 AS $$
-    SELECT id_docente, COUNT(*) AS total_tuplas
+RETURNS TABLE (nome_docente TEXT, count INTEGER) AS $$
+    SELECT p.nome, COUNT(*) AS total_disciplinas
     FROM (
       SELECT id_docente, COUNT(*) AS count
       FROM oferecimento
       WHERE data_ini >= '2020-05-01' AND data_fim <= '2023-05-31'
       GROUP BY id_docente, id_disciplina, data_ini
-    ) AS subconsulta
-    GROUP BY id_docente
-    ORDER BY total_tuplas DESC
+    ) AS sub, pessoa p
+    WHERE id_docente = p.id
+    GROUP BY p.nome
+    ORDER BY total_disciplinas DESC
     LIMIT 5;
 $$ LANGUAGE SQL;
 
