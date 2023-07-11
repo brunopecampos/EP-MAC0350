@@ -1,32 +1,26 @@
 package com.consulta4;
 
 public class Consulta4 {
-
-    private String perfil;
-    private String servico;
+    private String docente;
+    private Integer numDisciplinas;
     
     public Consulta4() {
     }
 
-    // Getter for 'perfil'
-    public String getPerfil() {
-        return perfil;
-    }
-
-    // Setter for 'perfil'
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
-    }
-
-    // Getter for 'servico'
-    public String getServico() {
-        return servico;
-    }
-
-    // Setter for 'servico'
-    public void setServico(String servico) {
-        this.servico = servico;
+    public String getDocente() {
+        return docente;
     }
     
+    public void setDocente(String docente) {
+        this.docente = docente;
+    }
+    
+    public Integer getNumDisciplinas() {
+        return numDisciplinas;
+    }
+    
+    public void setNumDisciplinas(Integer numDisciplinas) {
+        this.numDisciplinas = numDisciplinas;
+    }
 };
 

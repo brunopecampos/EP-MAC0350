@@ -7,8 +7,8 @@ public class Consulta4RowMapper implements RowMapper<Consulta4> {
     @Override
     public Consulta4 mapRow(ResultSet rs, int rowNum) throws SQLException {
         Consulta4 consulta = new Consulta4();
-        consulta.setPerfil(rs.getString("pnome"));
-        consulta.setServico(rs.getString("snome"));
+        consulta.setDocente(rs.getString("nome_docente"));
+        consulta.setNumDisciplinas(rs.getInt("disciplinas_ministradas"));
         return consulta;
     }
 }

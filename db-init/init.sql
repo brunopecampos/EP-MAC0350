@@ -150,8 +150,8 @@ CREATE TABLE historico_servico (
     id_servico INTEGER,
     data TIMESTAMP,
     UNIQUE (id_pessoa, id_servico, data),
-    FOREIGN KEY (id_pessoa) REFERENCES pessoa (id),
-    FOREIGN KEY (id_servico) REFERENCES servico(id)
+    FOREIGN KEY (id_pessoa) REFERENCES pessoa (id) ON DELETE CASCADE,
+    FOREIGN KEY (id_servico) REFERENCES servico(id) ON DELETE CASCADE
 );
 INSERT INTO historico_servico (id_pessoa, id_servico, data)
 VALUES (1, 2, '2023-05-17 10:30:00'),

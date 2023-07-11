@@ -2,31 +2,35 @@ package com.consulta3;
 
 public class Consulta3 {
 
-    // Chage parameters
-    private String perfil;
-    private String servico;
+    private String disciplina;
+    private String docente;
+    private String aluno;
     
     public Consulta3() {
     }
 
-    // Getter for 'perfil'
-    public String getPerfil() {
-        return perfil;
+    public String getDisciplina() {
+        return disciplina;
     }
-
-    // Setter for 'perfil'
-    public void setPerfil(String perfil) {
-        this.perfil = perfil;
+    
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
     }
-
-    // Getter for 'servico'
-    public String getServico() {
-        return servico;
+    
+    public String getDocente() {
+        return docente;
     }
-
-    // Setter for 'servico'
-    public void setServico(String servico) {
-        this.servico = servico;
+    
+    public void setDocente(String docente) {
+        this.docente = docente;
+    }
+    
+    public String getAluno() {
+        return aluno;
+    }
+    
+    public void setAluno(String aluno) {
+        this.aluno = aluno;
     }
     
 };
